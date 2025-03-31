@@ -16,7 +16,7 @@ ArtistID INTEGER references Artist(ArtistID)
 create table if not exists ALBUM (
 AlbumID serial primary key,
 AlbumName VARCHAR(100) not null,
-YearIssue date
+YearIssue date INTEGER CHECK(YearIssue BETWEEN 1900 AND 2999)
 );
 
 create table if not exists ArtistAlbum (
@@ -27,13 +27,17 @@ AlbumID INTEGER references Album(AlbumID)
 create table if not exists Track
 TrackID serial primary key,
 TrackName VARCHAR(200);
-Duration time,
+Duration time CHECK(Duration > 00:00:00),
 AlbumID INTEGER references Album(AlbumID)
 );
 
 create table if not exists Collection (
 CollectionID serial primary key,
 CollectionName VARCHAR(100),
-YearIssue date,
-TrackID INTEGER references Track(trackID)
+YearIssue date INTEGER CHECK(YearIssue BETWEEN 1900 AND 2999)
+);
+
+create table if not exists TrackCollection (
+TrackID INTEGER references Track(TrackID),
+CollectionID INTEGER references Collection(CollectionID)
 );
